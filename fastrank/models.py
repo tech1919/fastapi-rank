@@ -12,12 +12,21 @@ class Rank(Base):
 
     __tablename__ = "ranks"
 
-    id = Column(UUID(as_uuid=True), primary_key=True , default = uuid.uuid4)
+    id = Column(Integer, primary_key=True)
     name = Column(String(100) , nullable=False)
     mmr_treshold = Column(Integer , nullable=False)
 
 
+class RankUser(Base):
 
+    __tablename__ = "ranks_users"
+
+    id = Column(UUID(as_uuid=True), primary_key=True , default = uuid.uuid4)
+    rank_id = Column(Integer)
+    user_id = Column(UUID(as_uuid=True), nullable=False)
+    number_of_games = Column(Integer , nullable = False , default = 0)
+    xp = Column(Integer , nullable = False , default = 0)
+    stats_metadata = Column(JSON , nullable = True)
 
 
 # Base.metadata.drop_all(engine)

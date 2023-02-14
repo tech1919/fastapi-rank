@@ -1,11 +1,11 @@
 from fastapi import APIRouter , Depends
 
-from fastevents.routes import (
-    events,
-    logs,
+from fastrank.routes import (
+    ranks,
+    ranks_users,
 )
 
-events_router = APIRouter()
+rank_router = APIRouter()
 
-events_router.include_router( router = events.router , prefix="/events")
-events_router.include_router( router = logs.router , prefix="/logs")
+rank_router.include_router( router = ranks.router , prefix="/ranks")
+rank_router.include_router( router = ranks_users.router , prefix="/ranks-users")

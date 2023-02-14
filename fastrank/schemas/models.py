@@ -28,3 +28,31 @@ class RankDelete(BaseModel , BaseDelete):
 
 class RankRead(BaseModel):
     id : UUID
+
+
+
+########################
+# Ranks Users          #
+########################
+
+
+class RankUserCreate(BaseModel): 
+    rank_id : int
+    user_id : UUID
+    number_of_games : int
+    xp : int
+    stats_metadata : dict
+
+class RankUserUpdate(BaseModel):
+    id : UUID
+    rank_id : int
+    user_id : UUID
+    number_of_games : int
+    xp : int
+    stats_metadata : dict
+
+class RankUserDelete(BaseModel , BaseDelete):
+    pass
+
+class RankUserRead(BaseModel):
+    id : UUID
