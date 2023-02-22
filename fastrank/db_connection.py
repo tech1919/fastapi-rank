@@ -3,8 +3,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from fastrank.env_settings import *
 
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL) # , echo=True
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URL) # , echo=True
+except:
+    print(SQLALCHEMY_DATABASE_URL)
+    raise(Exception)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

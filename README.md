@@ -14,7 +14,7 @@ pip install "git+https://github.com/tech1919/fastapi-rank.git"
 
 Configure `.env` file:
 ```
-RANK_DATABASE_URL=postgres://username:password@host:port/database_name
+RANKS_DATABASE_URL=postgresql://username:password@host:port/database_name
 ```
 
 > ## Add the router to your FastAPI app
