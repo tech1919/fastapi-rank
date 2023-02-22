@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from env_settings import *
+from fastrank.env_settings import *
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL) # , echo=True
