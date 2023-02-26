@@ -17,6 +17,8 @@ from fastrank.utils.rank_crud import (
     rank_get_one,
     rank_update,
     rank_create,
+    rank_delete,
+    redevide_treshold_ranks,
 )
 
 router = APIRouter(tags=["Ranks"])
@@ -25,6 +27,8 @@ router = APIRouter(tags=["Ranks"])
 async def get_all(
     db : Session = Depends(get_db),
 ):
+    
+    
     return rank_get_all(db=db)
 
 @router.get("/get-one/{rank_id}")
@@ -42,8 +46,9 @@ async def create_one(
     record : RankCreate,
     db : Session = Depends(get_db),
 ):
-    
-    return rank_create(db = db , record = record)
+    new_record = rank_create(db = db , record = record)
+    redevide_treshold_ranks(db=db)
+    return new_record
 
 @router.put(
     "/update",
@@ -53,7 +58,18 @@ async def update_one(
     record : RankUpdate,
     db : Session = Depends(get_db),
 ):
-    return rank_update(record=record , db=db)
+    new_record = rank_update(record=record , db=db)
+    redevide_treshold_ranks(db=db)
+    return new_record
+
+@router.delete(
+    "/delete/{id}"
+)
+async def delete_one(
+    id : UUID,
+    db : Session = Depends(get_db),
+):
+    return rank_delete(db=db , id=id)
 
 
 

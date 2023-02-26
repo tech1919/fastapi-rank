@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 class BaseDelete:
     id : UUID
-    message : str
+    message : dict = {"msg" : "Record deleted"} 
 
 ########################
 # Ranks                #
@@ -40,10 +40,10 @@ class RankRead(BaseModel):
 
 
 class RankUserCreate(BaseModel): 
-    rank_id : int
+    rank_id : UUID
     user_id : UUID
-    number_of_games : int
-    xp : int
+    number_of_games : int = 0
+    xp : int = 0
     stats_metadata : dict
 
 class RankUserUpdate(BaseModel):
@@ -52,6 +52,7 @@ class RankUserUpdate(BaseModel):
     user_id : UUID
     number_of_games : int
     xp : int
+    mmr : int
     stats_metadata : dict
 
 class RankUserDelete(BaseModel , BaseDelete):

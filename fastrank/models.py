@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String , ForeignKey , Integer , JSON , Boolean , DateTime
+from sqlalchemy import Column, String , ForeignKey , Integer , JSON , Boolean , DateTime , Float
 from sqlalchemy.dialects.postgresql import UUID
 
 from typing import AsyncGenerator
@@ -24,10 +24,11 @@ class RankUser(Base):
     __tablename__ = "ranks_users"
 
     id = Column(UUID(as_uuid=True), primary_key=True , default = uuid.uuid4)
-    rank_id = Column(Integer)
+    rank_id = Column(UUID(as_uuid=True), nullable=False)
     user_id = Column(UUID(as_uuid=True), nullable=False)
     number_of_games = Column(Integer , nullable = False , default = 0)
     xp = Column(Integer , nullable = False , default = 0)
+    mmr_percent = Column(Float , nullable = False , default = 0.0)
     stats_metadata = Column(JSON , nullable = True)
 
 
