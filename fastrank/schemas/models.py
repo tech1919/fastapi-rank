@@ -15,7 +15,10 @@ class BaseDelete:
 
 
 class RankCreate(BaseModel): 
+
     name : str
+    number : int
+    sub_number : int
     mmr_treshold : int
 
 class RankUpdate(BaseModel):

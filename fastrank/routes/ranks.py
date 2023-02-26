@@ -16,6 +16,7 @@ from fastrank.utils.rank_crud import (
     rank_get_all,
     rank_get_one,
     rank_update,
+    rank_create,
 )
 
 router = APIRouter(tags=["Ranks"])
@@ -32,6 +33,17 @@ async def get_one(
     db : Session = Depends(get_db),
 ):
     return rank_get_one(db=db , id = rank_id)
+
+@router.post(
+        "/create",
+        status_code=status.HTTP_200_OK,
+)
+async def create_one(
+    record : RankCreate,
+    db : Session = Depends(get_db),
+):
+    
+    return rank_create(db = db , record = record)
 
 @router.put(
     "/update",

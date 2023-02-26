@@ -31,3 +31,16 @@ def rank_update(db: Session , record : RankUpdate):
     db.query(Rank).filter_by(id=record.id).update(update_query)
     db.commit()
     return db.query(Rank).filter_by(id=record.id).one()
+
+def rank_create( db : Session , record : RankCreate):
+
+    new_rank = Rank(
+        name = record.name,
+        number = record.number,
+        sub_number = record.sub_number,
+        mmr_treshold = record.mmr_treshold,
+    )
+    db.add(new_rank)
+    db.commit()
+
+    return db.query(Rank).filter_by(name = record.name , mmr_treshold = record.mmr_treshold).first()
