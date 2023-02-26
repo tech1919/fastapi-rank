@@ -83,6 +83,92 @@ async def update_user_mmr(
 
     return rank_user_get_by_user(db = db , user_id=user_id)
 
+@router.post(
+        "/update-xp/{user_id}/{xp_addition}",
+)
+async def update_user_xp(
+    user_id : UUID,
+    xp_addition : int,
+    db : Session = Depends(get_db),
+):
+    record = rank_user_get_by_user(db = db , user_id=user_id)
+    record.xp += xp_addition
+    db.commit()
+
+    return rank_user_get_by_user(db = db , user_id=user_id)
+
+
+@router.post(
+        "/update-stats/{user_id}",
+)
+async def update_user_stats(
+    user_id : UUID,
+    stats : dict = None,
+    db : Session = Depends(get_db),
+):
+    record = rank_user_get_by_user(db = db , user_id=user_id)
+    if not stats == None:
+        record.stats_metadata += stats
+        db.commit()
+
+    return rank_user_get_by_user(db = db , user_id=user_id)
+
+@router.post(
+        "/update-game-number/{user_id}"
+)
+async def update_user_game_number(
+    user_id : UUID,
+    game_number : int = None,
+    db : Session = Depends(get_db),
+):
+    record = rank_user_get_by_user(db = db , user_id=user_id)
+
+    if game_number == None:
+        record.number_of_games += 1
+    else:
+        record.number_of_games = game_number
+
+    db.commit()
+
+    return rank_user_get_by_user(db = db , user_id=user_id)
+
+
+@router.post(
+        "/update-all-info/{user_id}/{mmr_addition}/{xp_addition}"
+)
+async def update_all_game_info(
+    user_id : UUID,
+    mmr_addition : float,
+    xp_addition : int,
+    game_number : int = None,
+    stats : dict = None,
+    db : Session = Depends(get_db),
+):
+    
+    record = rank_user_get_by_user(db = db , user_id=user_id)
+
+    # XP
+    record.xp += xp_addition
+    
+    # NUMBER OF GAMES
+    if game_number == None:
+        record.number_of_games += 1
+    else:
+        record.number_of_games = game_number
+    
+    # METADATA STATS
+    if not stats == None:
+        record.stats_metadata += stats
+    
+    # MMR
+    rank_user_update_rank_with_mmr_input(db=db , record=record ,mmr_prec_addition=mmr_addition)
+    
+    db.commit()
+
+    return rank_user_get_by_user(db = db , user_id=user_id)
+
+
+
 @router.delete(
     "/delete/{id}", 
 )
