@@ -28,6 +28,8 @@ router = APIRouter(tags=["Ranks"])
 async def get_all(
     db : Session = Depends(get_db),
 ):
+    
+
     return rank_user_get_all(db=db)
 
 @router.get("/get-one/{id}")
@@ -35,6 +37,10 @@ async def get_one_by_id(
     rank_id : UUID,
     db : Session = Depends(get_db),
 ):
+    
+    """
+    This route retrive a all the rank-user records by the id of the rank.
+    """
     return rank_user_get_by_id(db=db , id = rank_id)
 
 @router.get(
@@ -44,6 +50,9 @@ async def get_one_by_user(
     user_id : UUID,
     db : Session = Depends(get_db),
 ):
+    """
+    This route retrive a specific rank-user record by the id of the **user**.
+    """
     return rank_user_get_by_user(db=db , user_id = user_id)
 
 @router.post(
@@ -64,6 +73,10 @@ async def update_one(
     record : RankUserUpdate,
     db : Session = Depends(get_db),
 ):
+    
+    """
+    This route lets you update a rank-user record.
+    """
     return rank_user_update(record=record , db=db)
 
 @router.post(
@@ -74,7 +87,16 @@ async def update_user_mmr(
     mmr_addition : float,
     db : Session = Depends(get_db)
 ):
+    
+    """
+    This route lets you update a user's mmr and rank by sending the `mmr_addition`.
+    * `mmr_addition` - the reward send from the reward model. a float number between 0-1
+    that represent the progression percentage of the user in his rank.
 
+    When a user pass the value 1 with his mmr_percent, he will be promoted to the next available rank.
+    Same as if a user is pass the 0 value (to negative values), he will be demoted a rank.
+    """
+    
     record = rank_user_get_by_user(db = db , user_id=user_id)
 
     rank_user_update_rank_with_mmr_input(db=db , record=record ,mmr_prec_addition=mmr_addition)
@@ -91,6 +113,11 @@ async def update_user_xp(
     xp_addition : int,
     db : Session = Depends(get_db),
 ):
+    
+    """
+    This route allow adding xp level to a rank-user record. The XP value of a user is 
+    a positive integer that can only increase with every game.
+    """
     record = rank_user_get_by_user(db = db , user_id=user_id)
     record.xp += xp_addition
     db.commit()
@@ -121,6 +148,14 @@ async def update_user_game_number(
     game_number : int = None,
     db : Session = Depends(get_db),
 ):
+    
+    """
+    This route allow adding a game to the number of games played by a user.
+
+    * Calling this route with only `user_id` - increase the value of games played by 1.
+    * Calling this route with only `user_id` and `game_number`- change the value of games played to `game_number`.
+
+    """
     record = rank_user_get_by_user(db = db , user_id=user_id)
 
     if game_number == None:
@@ -144,6 +179,14 @@ async def update_all_game_info(
     stats : dict = None,
     db : Session = Depends(get_db),
 ):
+    
+    """
+    This route allow apply multiple changes to a rank-user record at once.
+    * Change mmr_percent of a user
+    * Update XP level of a user
+    * Update stats
+    * Update number of games played
+    """
     
     record = rank_user_get_by_user(db = db , user_id=user_id)
 
@@ -176,4 +219,7 @@ async def delete_one(
     id : UUID,
     db : Session = Depends(get_db)
 ):
+    """
+    This route will delete a rank-user record for a given id
+    """
     return rank_user_delete(db=db , id=id)

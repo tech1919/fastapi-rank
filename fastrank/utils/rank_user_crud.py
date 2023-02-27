@@ -111,4 +111,4 @@ def rank_user_update_rank_with_mmr_input( db : Session , record : RankUser , mmr
     record.rank_id = all_ranks[rank_index].id
     record.mmr_percent = mmr_rest
 
-    return mmr_rest
+    return record

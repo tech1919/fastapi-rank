@@ -29,6 +29,11 @@ async def get_all(
 ):
     
     
+    """
+    This route retrive all the ranks available in the ranks tabls
+    in decending order (from highest rank to lowest).
+    """
+    
     return rank_get_all(db=db)
 
 @router.get("/get-one/{rank_id}")
